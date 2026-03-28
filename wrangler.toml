@@ -1,0 +1,76 @@
+name = "yxsm-mail"
+main = "src/server.js"
+compatibility_date = "2026-01-11"
+
+# 兼容性标志 - 启用 Node.js 兼容性（用于某些 npm 包）
+compatibility_flags = [
+  "nodejs_compat"
+]
+
+# 环境配置
+[env.production]
+# 生产环境配置 - 敏感信息应通过环境变量设置
+compatibility_date = "2025-12-01"
+compatibility_flags = ["nodejs_compat"]
+
+[env.staging]
+# 预发布环境配置
+compatibility_date = "2025-12-01"
+compatibility_flags = ["nodejs_compat"]
+
+# D1 数据库绑定（Wrangler v4 语法）
+[[d1_databases]]
+binding = "temp_mail_db"
+database_name = "temp_mail_db"
+database_id = "90268e21-1891-4edb-9ea1-f839ec026de0"
+# CI/本地需提供 D1_DATABASE_ID；占位未替换将导致运行时无绑定
+
+# 静态资源目录（Workers + Assets）
+[assets]
+directory = "./public"
+binding = "ASSETS"
+run_worker_first = true
+
+# R2 存储桶绑定（用于保存完整 EML 内容，部署时自动创建）
+[[r2_buckets]]
+binding = "MAIL_EML"
+bucket_name = "temp-mail-eml"
+# bucket_name 将在部署时自动创建，无需手动配置
+
+# KV 命名空间绑定（用于缓存和会话管理）
+# [[kv_namespaces]]
+# binding = "SESSION_CACHE"
+# id = "${SESSION_CACHE_ID}"
+# preview_id = "${SESSION_CACHE_PREVIEW_ID}"
+
+# 日志和监控配置
+# 注意：observability配置在最新版本中可能已变更，建议使用默认配置
+
+# 开发服务器配置
+[dev]
+# 开发服务器端口
+port = 8787
+# 启用本地持久化（如果支持）
+# persist = true
+# 本地持久化目录
+# persist_to = "./.wrangler/state"
+
+# 构建配置
+[build]
+# 构建命令（可选，如果使用自定义构建流程）
+# command = "npm run build"
+# 构建输出目录
+# upload.dir = "dist"
+
+# 自定义域配置（可选）
+# [[routes]]
+# pattern = "mail.example.com/*"
+# zone_name = "example.com"
+
+# 环境变量（通过 wrangler secret 设置）
+# [vars]
+# RESEND_API_KEY = "${RESEND_API_KEY}"
+# ADMIN_USERNAME = "${ADMIN_USERNAME}"
+# ADMIN_PASSWORD = "${ADMIN_PASSWORD}"
+# TELEGRAM_BOT_TOKEN = "${TELEGRAM_BOT_TOKEN}"
+# TELEGRAM_CHAT_ID = "${TELEGRAM_CHAT_ID}"

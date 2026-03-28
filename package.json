@@ -1,0 +1,56 @@
+{
+  "name": "yxsm-mail",
+  "version": "1.0.0",
+  "description": "基于 Cloudflare Workers 的临时邮箱服务",
+  "type": "module",
+  "main": "worker.js",
+  "scripts": {
+    "dev": "wrangler dev",
+    "predeploy": "node pre-deploy-check.cjs",
+    "deploy": "node deploy-with-env.cjs",
+    "deploy:checked": "npm run predeploy && node deploy-with-env.cjs",
+    "deploy:direct": "wrangler deploy",
+    "d1:setup": "wrangler d1 create temp_mail_db --remote || true && npm run d1:execute-basic:remote",
+    "d1:execute:local": "wrangler d1 execute temp_mail_db --local --file=d1-init.sql",
+    "d1:execute:remote": "wrangler d1 execute temp_mail_db --remote --file=d1-init.sql",
+    "d1:execute-basic:local": "wrangler d1 execute temp_mail_db --local --file=d1-init-basic.sql",
+    "d1:execute-basic:remote": "wrangler d1 execute temp_mail_db --remote --file=d1-init-basic.sql",
+    "d1:query:local": "wrangler d1 execute temp_mail_db --local",
+    "d1:query:remote": "wrangler d1 execute temp_mail_db --remote",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "test:watch": "vitest",
+    "lint": "eslint src/**/*.js",
+    "lint:fix": "eslint src/**/*.js --fix",
+    "type-check": "tsc --noEmit",
+    "build": "node build.js"
+  },
+  "dependencies": {
+    "@cloudflare/workers-types": "^4.20241111.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.0.0",
+    "@types/node": "^20.0.0",
+    "@vitest/coverage-v8": "^2.0.0",
+    "eslint": "^9.0.0",
+    "globals": "^15.0.0",
+    "typescript": "^5.5.4",
+    "vitest": "^2.0.0",
+    "wrangler": "^4.59.1"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/noxenys/temp-mail"
+  },
+  "keywords": [
+    "cloudflare",
+    "workers",
+    "email",
+    "temporary-email"
+  ],
+  "author": "noxenys",
+  "license": "Apache-2.0"
+}
