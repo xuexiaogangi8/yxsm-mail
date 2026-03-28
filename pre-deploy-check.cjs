@@ -25,7 +25,7 @@ async function preDeployCheck() {
         
         // 2. 检查表结构
         console.log('🗃️  检查数据库表结构...');
-        const tableCheck = execSync('npx wrangler d1 execute temp_mail_db --command="SELECT name FROM sqlite_master WHERE type=\"table\";"', { encoding: 'utf8' });
+        const tableCheck = execSync(`npx wrangler d1 execute temp_mail_db --command="SELECT name FROM sqlite_master WHERE type='table';"`, { encoding: 'utf8' });
         
         const requiredTables = ['mailboxes', 'messages', 'domains'];
         const existingTables = tableCheck.match(/\| ([a-z_]+) \|/g)?.map(t => t.replace(/\| ([a-z_]+) \|/, '$1')) || [];
